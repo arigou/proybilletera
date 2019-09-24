@@ -12,24 +12,40 @@ public class Usuario {
     @Id
     @Column(name = "usuario_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int usuarioId;
-    private String username;
-    private String password;
-    @Column(name = "email")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String emailUsuario;
-    @Column(name = "persona_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int personaId;
 
-    public Usuario(String username, String password, String emailUsuario, int personaId) {
-        this.username = username;
+    private Integer usuarioId;
+    private String userName;
+    private String password;
+    @Column (name= "email")
+    private String userEmail;
+    /*@Column(name = "persona_id")
+    private int personaId;*/
+    
+//ACTIVO lel OneTo One, pero para que funcione persona tiene quetener un valor. Aca no hace falta el cascade
+  @OneToOne // estas dos  anotaciones van siempre q este la tabla de FK, o @onetomany
+    @JoinColumn(name = "persona_id", referencedColumnName = "persona_id")
+    //@MapsId
+    private Persona persona;
+
+    /*@OneToMany (mappedBy = "deUsuario_id", cascade = CascadeType.ALL)
+    private Movimiento movimiento1;
+    @OneToMany (mappedBy = "aUsuario_id", cascade = CascadeType.ALL)
+    private Movimiento movimiento2;*/
+
+
+    public Usuario (String userName, String password, String email){
+        this.userName = userName;
         this.password = password;
-        this.emailUsuario = emailUsuario;
-        this.personaId = personaId;
+        this.userEmail = email;
     }
 
-    public Usuario() {
+    public Usuario(){
+
+    }
+
+
+    public Usuario (String password){
+        this.password = password;
     }
 
     public int getUsuarioId() {
@@ -40,12 +56,12 @@ public class Usuario {
         this.usuarioId = usuarioId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String userName) {
-        this.username = userName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -56,14 +72,20 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getEmail() {
-        return emailUsuario;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setEmailUsuario(String emailUsuario) {
-        this.emailUsuario = emailUsuario;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
+    
+    @Override
+    public String toString() {
+        return "Usuario [User Name=" + userName + ", Password=" + password + ", User Email=" + userEmail + "]";
+    }
+/*
     public int getPersonaId() {
         return personaId;
     }
@@ -72,10 +94,26 @@ public class Usuario {
         this.personaId = personaId;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario [email=" + emailUsuario + ", password=" + password + ", personaId=" + personaId + ", username="
-                + username + ", usuarioId=" + usuarioId + "]";
+    public Usuario(int personaId) {
+        this.personaId = personaId;
+    }*/
+    
+    public Persona getPersona() {
+        return persona;
     }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    /*public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }*/
+
+
 
 }

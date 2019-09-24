@@ -1,17 +1,17 @@
 package ar.com.ada.billeteravirtual;
 
-import java.*;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
-import org.hibernate.Query;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
 
-public class UsuarioManager {
+public class CuentaManager {
     protected SessionFactory sessionFactory;
 
     protected void setup() {
@@ -34,54 +34,54 @@ public class UsuarioManager {
         sessionFactory.close();
     }
 
-    protected void create(Usuario usuario) {
+    protected void create(Cuenta cuenta) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.save(usuario);
+        session.save(cuenta);
   
         session.getTransaction().commit();
         session.close();
     }
 
-    public Usuario read(int usuarioId) {
+    public Cuenta read(int cuentaId) {
         Session session = sessionFactory.openSession();
 
-        Usuario usuario = session.get(Usuario.class, usuarioId);
+        Cuenta cuenta = session.get(Cuenta.class, cuentaId);
 
         session.close();
 
-        return usuario;
+        return cuenta;
     }
 
-    protected Usuario readByDNI(String dni) {
+    protected Cuenta readByDNI(String dni) {
         Session session = sessionFactory.openSession();
 
-        Usuario usuario = session.get(Usuario.class, dni);
+        Cuenta cuenta = session.get(Cuenta.class, dni);
 
         session.close();
 
-        return usuario;
+        return cuenta;
     }
 
-    protected void update(Usuario usuario) {
+    protected void update(Cuenta cuenta) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.update(usuario);
+        session.update(cuenta);
 
         session.getTransaction().commit();
         session.close();
     }
 
-    protected void delete(Usuario usuario) {
+    protected void delete(Cuenta cuenta) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.delete(usuario);
+        session.delete(cuenta);
 
         session.getTransaction().commit();
         session.close();
@@ -92,15 +92,15 @@ public class UsuarioManager {
      * Este metodo en la vida real no debe existir ya qeu puede haber miles de usuarios
      * @return
      */
-    public List<Usuario> buscarTodas() {
+    public List<Cuenta> buscarTodas() {
 
         Session session = sessionFactory.openSession();
 
         ///NUNCA HARCODEAR SQLs nativos en la aplicacion.
         //ESTO es solo para nivel educativo
-        Query query = session.createNativeQuery("SELECT * FROM usuario", Usuario.class);
+        Query query = session.createNativeQuery("SELECT * FROM cuenta", Cuenta.class);
 
-        List<Usuario> todas = query.getResultList();
+        List<Cuenta> todas = query.getResultList();
 
         return todas;
 

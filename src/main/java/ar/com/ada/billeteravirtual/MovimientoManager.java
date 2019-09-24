@@ -1,17 +1,17 @@
 package ar.com.ada.billeteravirtual;
 
-import java.*;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
-import org.hibernate.Query;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
 
-public class UsuarioManager {
+public class MovimientoManager {
     protected SessionFactory sessionFactory;
 
     protected void setup() {
@@ -34,54 +34,45 @@ public class UsuarioManager {
         sessionFactory.close();
     }
 
-    protected void create(Usuario usuario) {
+    protected void create(Movimiento movimiento) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.save(usuario);
+        session.save(movimiento);
   
         session.getTransaction().commit();
         session.close();
     }
 
-    public Usuario read(int usuarioId) {
+    public Movimiento read(int movimientoId) {
         Session session = sessionFactory.openSession();
 
-        Usuario usuario = session.get(Usuario.class, usuarioId);
+        Movimiento movimiento = session.get(Movimiento.class, movimientoId);
 
         session.close();
 
-        return usuario;
+        return movimiento;
     }
 
-    protected Usuario readByDNI(String dni) {
-        Session session = sessionFactory.openSession();
 
-        Usuario usuario = session.get(Usuario.class, dni);
-
-        session.close();
-
-        return usuario;
-    }
-
-    protected void update(Usuario usuario) {
+    protected void update(Movimiento movimiento) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.update(usuario);
+        session.update(movimiento);
 
         session.getTransaction().commit();
         session.close();
     }
 
-    protected void delete(Usuario usuario) {
+    protected void delete(Movimiento movimiento) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.delete(usuario);
+        session.delete(movimiento);
 
         session.getTransaction().commit();
         session.close();
@@ -92,15 +83,15 @@ public class UsuarioManager {
      * Este metodo en la vida real no debe existir ya qeu puede haber miles de usuarios
      * @return
      */
-    public List<Usuario> buscarTodas() {
+    public List<Movimiento> buscarTodas() {
 
         Session session = sessionFactory.openSession();
 
         ///NUNCA HARCODEAR SQLs nativos en la aplicacion.
         //ESTO es solo para nivel educativo
-        Query query = session.createNativeQuery("SELECT * FROM usuario", Usuario.class);
+        Query query = session.createNativeQuery("SELECT * FROM movimiento", Movimiento.class);
 
-        List<Usuario> todas = query.getResultList();
+        List<Movimiento> todas = query.getResultList();
 
         return todas;
 

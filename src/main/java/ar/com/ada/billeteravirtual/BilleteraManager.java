@@ -1,17 +1,17 @@
 package ar.com.ada.billeteravirtual;
 
-import java.*;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
-import org.hibernate.Query;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
 
-public class UsuarioManager {
+public class BilleteraManager {
     protected SessionFactory sessionFactory;
 
     protected void setup() {
@@ -34,54 +34,45 @@ public class UsuarioManager {
         sessionFactory.close();
     }
 
-    protected void create(Usuario usuario) {
+    protected void create(Billetera billetera) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.save(usuario);
+        session.save(billetera);
   
         session.getTransaction().commit();
         session.close();
     }
 
-    public Usuario read(int usuarioId) {
+    public Billetera read(int billeteraId) {
         Session session = sessionFactory.openSession();
 
-        Usuario usuario = session.get(Usuario.class, usuarioId);
+        Billetera billetera = session.get(Billetera.class, billeteraId);
 
         session.close();
 
-        return usuario;
+        return billetera;
     }
 
-    protected Usuario readByDNI(String dni) {
-        Session session = sessionFactory.openSession();
 
-        Usuario usuario = session.get(Usuario.class, dni);
-
-        session.close();
-
-        return usuario;
-    }
-
-    protected void update(Usuario usuario) {
+    protected void update(Billetera billetera) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.update(usuario);
+        session.update(billetera);
 
         session.getTransaction().commit();
         session.close();
     }
 
-    protected void delete(Usuario usuario) {
+    protected void delete(Billetera billetera) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.delete(usuario);
+        session.delete(billetera);
 
         session.getTransaction().commit();
         session.close();
@@ -92,15 +83,15 @@ public class UsuarioManager {
      * Este metodo en la vida real no debe existir ya qeu puede haber miles de usuarios
      * @return
      */
-    public List<Usuario> buscarTodas() {
+    public List<Billetera> buscarTodas() {
 
         Session session = sessionFactory.openSession();
 
         ///NUNCA HARCODEAR SQLs nativos en la aplicacion.
         //ESTO es solo para nivel educativo
-        Query query = session.createNativeQuery("SELECT * FROM usuario", Usuario.class);
+        Query query = session.createNativeQuery("SELECT * FROM billetera", Billetera.class);
 
-        List<Usuario> todas = query.getResultList();
+        List<Billetera> todas = query.getResultList();
 
         return todas;
 
@@ -114,7 +105,7 @@ public class UsuarioManager {
      * @param nombre
      * @return
      */
-    public List<Usuario> buscarPor(String username) {
+    public List<Billetera> buscarPor(String username) {
 
         Session session = sessionFactory.openSession();
 
@@ -123,9 +114,9 @@ public class UsuarioManager {
         //como nombre: "' or '1'='1"
         Query query = session.createNativeQuery("SELECT * FROM persona where nombre = '"+username+"'", Usuario.class);
 
-        List<Usuario> usuarios = query.getResultList();
+        List<Billetera> billeteras = query.getResultList();
 
-        return usuarios;
+        return billeteras;
 
         
 
