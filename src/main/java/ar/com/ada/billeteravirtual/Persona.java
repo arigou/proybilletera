@@ -101,4 +101,14 @@ public class Persona {
     public Usuario getUsuario() {
         return usuario;
     }
+
+    public Billetera getBilletera() {
+        return billetera;
+    }
+
+    public void setBilletera(Billetera billetera) {
+        this.billetera = billetera; 
+       
+        
+    }
 }

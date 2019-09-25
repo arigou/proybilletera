@@ -22,10 +22,8 @@ public class Billetera {
     @JoinColumn(name = "persona_id", referencedColumnName = "persona_id")
     private Persona persona;
 
-    @OneToMany( mappedBy = "cuenta", cascade = CascadeType.ALL)
-    private Cuenta cuenta;
-
-    
+    @OneToMany( mappedBy = "billetera", cascade = CascadeType.ALL)
+    //private Cuenta cuenta;
     private List <Cuenta> cuentas =  new ArrayList<Cuenta>();
 
     public Billetera(int billeteraId) {
@@ -51,6 +49,20 @@ public class Billetera {
         this.cuentas = cuentas;
     }
 
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+        this.persona.setBilletera(this);
+    }
+
+    public void agregarCuentas (Cuenta cuenta) {
+        cuenta.setBilletera(this);
+        this.cuentas.add(cuenta); 
+
+    }
 
 
 

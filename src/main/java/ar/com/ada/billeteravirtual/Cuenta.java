@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import javax.persistence.*;
 
-import java.util.*; 
+import javassist.expr.NewArray;
+
+import java.util.*;
 
 /**
  * Cuenta
@@ -19,19 +21,71 @@ public class Cuenta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int nroCuentaId;
 
-    @ManyToOne // estas dos  anotaciones van siempre q este la tabla de FK, o @onetomany
+    @ManyToOne // estas dos anotaciones van siempre q este la tabla de FK, o @onetomany
     @JoinColumn(name = "billetera_id", referencedColumnName = "billetera_id")
     private Billetera billetera;
 
-    /*@OneToMany (mappedBy = "cuentaOrigen_id", cascade = CascadeType.ALL)
-    private Movimiento movimiento;*/
-    /*@OneToMany (mappedBy = "cuentaDestino_id", cascade = CascadeType.ALL)
-    private Movimiento movimiento;*/
-    
+    @OneToMany(mappedBy = "cuenta", cascade = CascadeType.ALL)
+    private List<Movimiento> movimientos = new ArrayList<Movimiento>();
+    // @OneToMany (mappedBy = "cuentaDestino_id", cascade = CascadeType.ALL)
+    // private Movimiento movimiento;
 
     private String moneda;
     private double saldo;
     private double saldoDisponible;
-    private List <Movimiento> movimientos = new ArrayList <Movimiento>(); 
+
+    public int getNroCuentaId() {
+        return nroCuentaId;
+    }
+
+    public void setNroCuentaId(int nroCuentaId) {
+        this.nroCuentaId = nroCuentaId;
+    }
+
+    public Billetera getBilletera() {
+        return billetera;
+    }
+
+    public void setBilletera(Billetera billetera) {
+        this.billetera = billetera;
+    }
+
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public double getSaldoDisponible() {
+        return saldoDisponible;
+    }
+
+    public void setSaldoDisponible(double saldoDisponible) {
+        this.saldoDisponible = saldoDisponible;
+    }
+
+    /*public void depositoDinero(Movimiento movimiento) {
+        movimiento.setSaldo(this);
+        this.movimiento.add(movimiento);
+
+    }*/
+
+    public List<Movimiento> getMovimientos() {
+        return movimientos;
+    }
+
+    public void setMovimientos(List<Movimiento> movimientos) {
+        this.movimientos = movimientos;
+    }
 
 }

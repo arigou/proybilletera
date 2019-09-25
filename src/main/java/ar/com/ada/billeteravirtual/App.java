@@ -13,9 +13,15 @@ public class App {
 
     public static UsuarioManager ABMUsuario = new UsuarioManager(); 
 
+    public static BilleteraManager ABMBilletera = new BilleteraManager(); 
+
+    public static CuentaManager ABMCuentas = new CuentaManager(); 
+
     public static void main(String[] args) throws Exception {
         ABMPersona.setup();
         ABMUsuario.setup();
+        ABMBilletera.setup (); 
+        ABMCuentas.setup ();
 
         printOpciones();
 
@@ -64,6 +70,8 @@ public class App {
         // Hago un safe exit del manager
         ABMPersona.exit();
         ABMUsuario.exit();
+        ABMBilletera.exit(); 
+        ABMCuentas.exit(); 
 
     }
 
@@ -84,15 +92,15 @@ public class App {
 
         System.out.println("Persona generada con exito.  " + p);
 
-        System.out.println("Desea crear un usuario para esta persona?");
-        String rta;
-        rta = Teclado.nextLine();
-        if (rta.equals("si")) {
+        //System.out.println("Desea crear un usuario para esta persona?");
+        //String rta;
+        //rta = Teclado.nextLine();
+        //if (rta.equals("si")) {
 
             Usuario u = new Usuario();
             u.setUserName(p.getEmail());
             System.out.println("Su nombre de usuario es " + u.getUserName());
-            System.out.println("Ingrese su password:");
+            System.out.println("Ingrese un password:");
             
             //La password ingresa en texto claro a la variable y luego se encripta
             String passwordEnTextoClaro;
@@ -131,13 +139,30 @@ public class App {
             //ABMUsuario.create(u);
 
             //System.out.println("Usuario generado con exito.  " + u);
-        }
+        //}
+        Billetera b = new Billetera();
+        b.setPersona(p);
+
+        Cuenta c = new Cuenta ();
+        c.setMoneda("ARS");
+        b.agregarCuentas(c);
+
+        Movimiento m = new Movimiento();
+        m.setImporte(256.10);
+        c.setSaldo(c.getSaldo()+m.getImporte()); 
+        m.setConceptoOperacion("Depósito");
+        
+        
 
         ABMPersona.create(p);
 
         System.out.println("Persona generada con exito.  " + p);
-        if (p.getUsuario() != null)
-            System.out.println("Tambien se le creo un usuario: " + p.getUsuario().getUserName());
+        System.out.println("Tambien se le creo un usuario: " + p.getUsuario().getUserName());
+        System.out.println("Billetera virtual generada con exito.  " );
+
+
+
+
     }
 
     public static void baja()  {

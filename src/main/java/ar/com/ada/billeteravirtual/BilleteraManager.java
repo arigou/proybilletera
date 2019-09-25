@@ -1,8 +1,6 @@
 package ar.com.ada.billeteravirtual;
-
 import java.util.*;
 import java.util.logging.Level;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
