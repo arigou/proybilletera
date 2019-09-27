@@ -1,7 +1,6 @@
 package ar.com.ada.billeteravirtual;
 
 import java.util.*;
-
 import ar.com.ada.billeteravirtual.excepciones.PersonaEdadException;
 import ar.com.ada.billeteravirtual.security.Crypto;
 
@@ -11,17 +10,17 @@ public class App {
 
     public static PersonaManager ABMPersona = new PersonaManager();
 
-    public static UsuarioManager ABMUsuario = new UsuarioManager(); 
+    public static UsuarioManager ABMUsuario = new UsuarioManager();
 
-    public static BilleteraManager ABMBilletera = new BilleteraManager(); 
+    public static BilleteraManager ABMBilletera = new BilleteraManager();
 
-    public static CuentaManager ABMCuentas = new CuentaManager(); 
+    public static CuentaManager ABMCuentas = new CuentaManager();
 
     public static void main(String[] args) throws Exception {
         ABMPersona.setup();
         ABMUsuario.setup();
-        ABMBilletera.setup (); 
-        ABMCuentas.setup ();
+        ABMBilletera.setup();
+        ABMCuentas.setup();
 
         printOpciones();
 
@@ -32,10 +31,10 @@ public class App {
 
             switch (opcion) {
             case 1:
-            
+
                 try {
-                    alta();            
-                } catch (PersonaEdadException exedad){
+                    alta();
+                } catch (PersonaEdadException exedad) {
                     System.out.println("La edad permitida es a partir de 18 anios");
                 }
                 break;
@@ -70,8 +69,8 @@ public class App {
         // Hago un safe exit del manager
         ABMPersona.exit();
         ABMUsuario.exit();
-        ABMBilletera.exit(); 
-        ABMCuentas.exit(); 
+        ABMBilletera.exit();
+        ABMCuentas.exit();
 
     }
 
@@ -88,84 +87,105 @@ public class App {
         System.out.println("Ingrese el Email:");
         p.setEmail(Teclado.nextLine());
 
-        //ABMPersona.create(p);
+        // ABMPersona.create(p);
 
         System.out.println("Persona generada con exito.  " + p);
 
-        //System.out.println("Desea crear un usuario para esta persona?");
-        //String rta;
-        //rta = Teclado.nextLine();
-        //if (rta.equals("si")) {
+        // System.out.println("Desea crear un usuario para esta persona?");
+        // String rta;
+        // rta = Teclado.nextLine();
+        // if (rta.equals("si")) {
 
-            Usuario u = new Usuario();
-            u.setUserName(p.getEmail());
-            System.out.println("Su nombre de usuario es " + u.getUserName());
-            System.out.println("Ingrese un password:");
-            
-            //La password ingresa en texto claro a la variable y luego se encripta
-            String passwordEnTextoClaro;
-            String passwordEncriptada;
-            String passwordEnTextoClaroDesencriptado;
+        Usuario u = new Usuario();
+        u.setUserName(p.getEmail());
+        System.out.println("Su nombre de usuario es " + u.getUserName());
+        System.out.println("Ingrese un password:");
 
-            passwordEnTextoClaro = Teclado.nextLine();
+        // La password ingresa en texto claro a la variable y luego se encripta
+        String passwordEnTextoClaro;
+        String passwordEncriptada;
+        String passwordEnTextoClaroDesencriptado;
 
-            passwordEncriptada = Crypto.encrypt(passwordEnTextoClaro, u.getUserName());
+        passwordEnTextoClaro = Teclado.nextLine();
 
-            passwordEnTextoClaroDesencriptado = Crypto.decrypt(passwordEncriptada, u.getUserName());
+        passwordEncriptada = Crypto.encrypt(passwordEnTextoClaro, u.getUserName());
 
-            System.out.println("Tu password encriptada es :" +  passwordEncriptada);
+        passwordEnTextoClaroDesencriptado = Crypto.decrypt(passwordEncriptada, u.getUserName());
 
-            System.out.println("Tu password desencriptada es :" +  passwordEnTextoClaroDesencriptado);
+        System.out.println("Tu password encriptada es :" + passwordEncriptada);
 
-            if (passwordEnTextoClaro.equals(passwordEnTextoClaroDesencriptado))
-            {
-                System.out.println("Ambas passwords coinciden");
-            }
-            else {
-                System.out.println("Las passwords no coinciden, nunca debio entrar aqui");
-            }
+        System.out.println("Tu password desencriptada es :" + passwordEnTextoClaroDesencriptado);
 
-            u.setPassword(passwordEncriptada);
+        if (passwordEnTextoClaro.equals(passwordEnTextoClaroDesencriptado)) {
+            System.out.println("Ambas passwords coinciden");
+        } else {
+            System.out.println("Las passwords no coinciden, nunca debio entrar aqui");
+        }
 
-            /*
-             * System.out.println("Su mail es:"); u.setUserEmail(p.getEmail());
-             */
-            //System.out.println("Ingrese su email de usuario:");
-            u.setUserEmail(u.getUserName());
+        u.setPassword(passwordEncriptada);
+        /*
+         * System.out.println("Su mail es:"); u.setUserEmail(p.getEmail());
+         */
+        // System.out.println("Ingrese su email de usuario:");
+        u.setUserEmail(u.getUserName());
+        p.setUsuario(u);
+        ABMPersona.create(p);
+        // u.setPersona(p); <- esta linea hariaa falta si no lo hacemos en el
+        // p.SetUsuario(u)
+        // u.setPersonaId(p.getPesonaId());
+        // ABMUsuario.create(u);
+        // System.out.println("Usuario generado con exito. " + u);
+        // }
 
-            p.setUsuario(u);
-            //u.setPersona(p); <- esta linea hariaa falta si no lo hacemos en el p.SetUsuario(u)
-            //u.setPersonaId(p.getPesonaId());
-            //ABMUsuario.create(u);
-
-            //System.out.println("Usuario generado con exito.  " + u);
-        //}
         Billetera b = new Billetera();
         b.setPersona(p);
 
-        Cuenta c = new Cuenta ();
+        Cuenta c = new Cuenta();
         c.setMoneda("ARS");
         b.agregarCuentas(c);
 
-        Movimiento m = new Movimiento();
-        m.setImporte(256.10);
-        c.setSaldo(c.getSaldo()+m.getImporte()); 
-        m.setConceptoOperacion("Depósito");
-        
-        
+        ABMBilletera.create(b);
 
-        ABMPersona.create(p);
+        Movimiento m = new Movimiento();
+        m.setConceptoOperacion("Deposito");
+        m.setTipoOperacion("CTA CTE");
+        m.setImporte(100);
+        m.setFechaMovimiento(new Date());
+        m.setDetalle("Depósito de bienvenida");
+        m.setEstado(1);
+        m.setCuentaDestinoId(c.getcuentaId());
+        m.setCuentaOrigenId(c.getcuentaId());
+        m.setDeUsuarioId(u.getUsuarioId());
+        m.setaUsuarioId(u.getUsuarioId());
+        c.agregarMovimiento(m);
+
+        ABMBilletera.update(b);
 
         System.out.println("Persona generada con exito.  " + p);
         System.out.println("Tambien se le creo un usuario: " + p.getUsuario().getUserName());
-        System.out.println("Billetera virtual generada con exito.  " );
+        System.out.println("Billetera virtual generada con exito.  ");
 
-
-
-
+        Billetera b2 = ABMBilletera.read(b.getBilleteraId());
+        System.out.println("Su saldo es: " + c.getSaldo());
+         //System.out.println("El saldo de tu billetera es: " +
+         //b2.getCuentas().get(0).getSaldo());
     }
 
-    public static void baja()  {
+    /*
+     * public static void transferirDinero(Usuario u, Cuenta c, Movimiento m) {
+     * 
+     * ABMUsuario.read(u.getUsuarioId());
+     * 
+     * ABMCuentas.read(c.getcuentaId());
+     * 
+     * m = new Movimiento();     * 
+     * //}
+     * 
+     * /*public static void recibirDinero() {     * 
+     * }
+     */
+
+    public static void baja() {
         System.out.println("Ingrese el nombre:");
         String n = Teclado.nextLine();
         System.out.println("Ingrese el ID de Persona:");

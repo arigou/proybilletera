@@ -17,6 +17,21 @@ public class Movimiento {
     @Column(name = "movimiento_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int movimientoId;
+    @Column(name = "deUsuario_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int deUsuarioId;
+    @Column(name = "aUsuario_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int aUsuarioId; 
+    @Column(name = "cuentaOrigen_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int cuentaOrigenId;
+    @Column(name = "cuentaDestino_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int cuentaDestinoId;
+    /*@Column(name = "cuenta_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int cuentaId;*/
 
     @ManyToOne // estas dos  anotaciones van siempre q este la tabla de FK, o @onetomany
     @JoinColumn(name = "cuenta_id", referencedColumnName = "cuenta_id")
@@ -40,19 +55,9 @@ public class Movimiento {
     private String tipoOperacion;
     private String conceptoOperacion;
     private String detalle;
-    private int estado; 
-    @Column(name = "deUsuario_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int deUsuarioId;
-    @Column(name = "aUsuario_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int aUsuarioId; 
-    @Column(name = "cuentaOrigen_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cuentaOrigenId;
-    @Column(name = "cuentaDestino_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cuentaDestinoId;
+    private int estado;   
+    
+    
 
     public int getMovimientoId() {
         return movimientoId;
@@ -141,6 +146,47 @@ public class Movimiento {
     public void setCuentaDestinoId(int cuentaDestinoId) {
         this.cuentaDestinoId = cuentaDestinoId;
     }
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
+    }
+
+    
+
+    public Movimiento(int movimientoId, int deUsuarioId, int aUsuarioId, int cuentaOrigenId, int cuentaDestinoId,
+            /*int cuentaId,*/ Cuenta cuenta, Date fechaMovimiento, double importe, String tipoOperacion,
+            String conceptoOperacion, String detalle, int estado) {
+        this.movimientoId = movimientoId;
+        this.deUsuarioId = deUsuarioId;
+        this.aUsuarioId = aUsuarioId;
+        this.cuentaOrigenId = cuentaOrigenId;
+        this.cuentaDestinoId = cuentaDestinoId;
+        //this.cuentaId = cuentaId;
+        this.cuenta = cuenta;
+        this.fechaMovimiento = fechaMovimiento;
+        this.importe = importe;
+        this.tipoOperacion = tipoOperacion;
+        this.conceptoOperacion = conceptoOperacion;
+        this.detalle = detalle;
+        this.estado = estado;
+    }
+
+    public Movimiento () {
+
+    }
+
+    /*public int getCuentaId() {
+        return cuentaId;
+    }
+
+    public void setCuentaId(int cuentaId) {
+        this.cuentaId = cuentaId;
+    }*/
+
 
 
 

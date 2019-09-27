@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.persistence.*;
 
 import javassist.expr.NewArray;
+import net.bytebuddy.asm.Advice.This;
 
 import java.util.*;
 
@@ -19,7 +20,7 @@ public class Cuenta {
     @Id
     @Column(name = "cuenta_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int nroCuentaId;
+    private int cuentaId;
 
     @ManyToOne // estas dos anotaciones van siempre q este la tabla de FK, o @onetomany
     @JoinColumn(name = "billetera_id", referencedColumnName = "billetera_id")
@@ -30,16 +31,27 @@ public class Cuenta {
     // @OneToMany (mappedBy = "cuentaDestino_id", cascade = CascadeType.ALL)
     // private Movimiento movimiento;
 
+    
+
     private String moneda;
     private double saldo;
     private double saldoDisponible;
 
-    public int getNroCuentaId() {
-        return nroCuentaId;
+    public Cuenta(int cuentaId, String moneda, double saldo, double saldoDisponible) {
+        this.cuentaId = cuentaId;
+        this.moneda = moneda;
+        this.saldo = saldo;
+        this.saldoDisponible = saldoDisponible;
     }
 
-    public void setNroCuentaId(int nroCuentaId) {
-        this.nroCuentaId = nroCuentaId;
+
+
+    public int cuentaId() {
+        return cuentaId;
+    }
+
+    public Cuenta () {
+
     }
 
     public Billetera getBilletera() {
@@ -74,11 +86,15 @@ public class Cuenta {
         this.saldoDisponible = saldoDisponible;
     }
 
-    /*public void depositoDinero(Movimiento movimiento) {
-        movimiento.setSaldo(this);
-        this.movimiento.add(movimiento);
+    public void agregarMovimiento (Movimiento movimiento) {
+        movimiento.setCuenta (this);   
+        movimientos.add(movimiento);
+        this.setSaldo(this.getSaldo() + movimiento.getImporte()); 
+        this.setSaldoDisponible(this.getSaldo());
+        
+        
 
-    }*/
+    }
 
     public List<Movimiento> getMovimientos() {
         return movimientos;
@@ -86,6 +102,14 @@ public class Cuenta {
 
     public void setMovimientos(List<Movimiento> movimientos) {
         this.movimientos = movimientos;
+    }
+
+    public int getcuentaId() {
+        return cuentaId;
+    }
+
+    public void setcuentaId(int cuentaId) {
+        this.cuentaId = cuentaId;
     }
 
 }
