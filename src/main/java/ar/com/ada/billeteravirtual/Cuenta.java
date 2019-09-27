@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javassist.expr.NewArray;
 import net.bytebuddy.asm.Advice.This;
 
@@ -27,6 +30,7 @@ public class Cuenta {
     private Billetera billetera;
 
     @OneToMany(mappedBy = "cuenta", cascade = CascadeType.ALL)
+    @LazyCollection (LazyCollectionOption.FALSE)
     private List<Movimiento> movimientos = new ArrayList<Movimiento>();
     // @OneToMany (mappedBy = "cuentaDestino_id", cascade = CascadeType.ALL)
     // private Movimiento movimiento;

@@ -164,26 +164,49 @@ public class App {
         System.out.println("Persona generada con exito.  " + p);
         System.out.println("Tambien se le creo un usuario: " + p.getUsuario().getUserName());
         System.out.println("Billetera virtual generada con exito.  ");
+        // System.out.println("Su saldo es: " + c.getSaldo());
+        System.out.println("El saldo de tu billetera es: " + b.getCuentas().get(0).getSaldo());
 
-        Billetera b2 = ABMBilletera.read(b.getBilleteraId());
-        System.out.println("Su saldo es: " + c.getSaldo());
-         //System.out.println("El saldo de tu billetera es: " +
-         //b2.getCuentas().get(0).getSaldo());
+        Billetera b2 = ABMBilletera.read(15);
+        Billetera b3 = ABMBilletera.read(11);
+
+        Movimiento m2 = new Movimiento();
+        m2.setImporte(-10);
+        b2.getCuentas().get(0).agregarMovimiento(m2);
+        m2.setConceptoOperacion("Transferencia");
+        m2.setTipoOperacion(" ");
+        m2.setFechaMovimiento(new Date());
+        m2.setDetalle("a terceros");
+        m2.setEstado(1);
+        m2.setCuentaDestinoId(b3.getCuentas().get(0).getcuentaId());
+        m2.setCuentaOrigenId(b2.getCuentas().get(0).getcuentaId());
+        m2.setDeUsuarioId(u.getUsuarioId());
+        m2.setaUsuarioId(18);
+        b2.getCuentas().get(0).getSaldo();
+        ABMBilletera.update(b2);
+        System.out.println("El saldo del ususario " + b2.getPersona().getUsuario().getUsuarioId() +
+          " en la billetera es: " + b2.getCuentas().get(0).getSaldo());
+
+        Movimiento m3 = new Movimiento();
+        m3.setImporte(+10);
+        b3.getCuentas().get(0).agregarMovimiento(m3);
+        m3.setConceptoOperacion("Transferencia");
+        m3.setTipoOperacion(" ");
+        m3.setFechaMovimiento(new Date());
+        m3.setDetalle("a terceros");
+        m3.setEstado(1);
+        m3.setCuentaDestinoId(b3.getCuentas().get(0).getcuentaId());
+        m3.setCuentaOrigenId(b2.getCuentas().get(0).getcuentaId());
+        m3.setDeUsuarioId(u.getUsuarioId());
+        m3.setaUsuarioId(18);
+        b3.getCuentas().get(0).getSaldo();
+        ABMBilletera.update(b3);
+        System.out.println("El saldo del ususario " + b3.getPersona().getUsuario().getUsuarioId() +
+          " en la billetera es: " + b3.getCuentas().get(0).getSaldo());
+
+        
+
     }
-
-    /*
-     * public static void transferirDinero(Usuario u, Cuenta c, Movimiento m) {
-     * 
-     * ABMUsuario.read(u.getUsuarioId());
-     * 
-     * ABMCuentas.read(c.getcuentaId());
-     * 
-     * m = new Movimiento();     * 
-     * //}
-     * 
-     * /*public static void recibirDinero() {     * 
-     * }
-     */
 
     public static void baja() {
         System.out.println("Ingrese el nombre:");

@@ -4,6 +4,12 @@ import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import net.bytebuddy.agent.builder.AgentBuilder.InitializationStrategy.SelfInjection.Lazy;
+
 import javax.persistence.*;
 
 /**
@@ -23,6 +29,7 @@ public class Billetera {
     private Persona persona;
 
     @OneToMany( mappedBy = "billetera", cascade = CascadeType.ALL)
+    @LazyCollection (LazyCollectionOption.FALSE)
     //private Cuenta cuenta;
     private List <Cuenta> cuentas =  new ArrayList<Cuenta>();
 
